@@ -1,0 +1,13 @@
+schema {
+ query: Query
+}
+
+type Query {
+ allCoffees: [Coffee]
+ coffee(id: String): Coffee
+}
+
+type Coffee {
+  cid: String
+  name: String
+}
