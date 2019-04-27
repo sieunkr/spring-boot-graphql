@@ -7,3 +7,7 @@ import org.springframework.stereotype.Repository;
 public interface CoffeeRepository extends JpaRepository<Coffee, String> {
     Coffee findByCid(String cid);
 }
+
+
+
+

@@ -3,8 +3,6 @@ package com.example.demo.core;
 import graphql.ExecutionResult;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class CoffeeUseCase {
 
@@ -18,15 +16,16 @@ public class CoffeeUseCase {
         return coffeeDetails.execute(query);
     }
 
+
     /*
     public List<Coffee> findAll(){
-        //return coffeeDetails.findAll();
-        return null;
+        return coffeeDetails.findAll();
+
     }
 
     public Coffee findByCid(String cid){
-        //return coffeeDetails.findByCid(cid);
-        return null;
+        return coffeeDetails.findByCid(cid);
+
     }
     */
 }

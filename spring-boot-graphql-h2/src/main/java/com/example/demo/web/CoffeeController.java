@@ -20,7 +20,7 @@ public class CoffeeController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> getAllCoffees(@RequestBody String query) {
+    public ResponseEntity<Object> getCoffeeByQuery(@RequestBody String query) {
         ExecutionResult execute = coffeeUseCase.execute(query);
 
         return new ResponseEntity<>(execute, HttpStatus.OK);

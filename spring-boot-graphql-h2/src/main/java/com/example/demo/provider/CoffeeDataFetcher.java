@@ -17,7 +17,7 @@ public class CoffeeDataFetcher implements DataFetcher<Coffee> {
 
     @Override
     public Coffee get(DataFetchingEnvironment dataFetchingEnvironment) {
-        String cid = dataFetchingEnvironment.getArgument("cid");
+        String cid = dataFetchingEnvironment.getArgument("id");
         return  coffeeRepository.findByCid(cid);
     }
 }

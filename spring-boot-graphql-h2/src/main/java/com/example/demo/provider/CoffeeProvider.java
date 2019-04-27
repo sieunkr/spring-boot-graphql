@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.stream.Stream;
 
 @Component
@@ -27,6 +26,8 @@ public class CoffeeProvider implements CoffeeDetails {
 
     private final AllCoffeesDataFetcher allCoffeesDataFetcher;
 
+    private final AllCoffeesOrderByDataFetcher allCoffeesOrderByDataFetcher;
+
     private final CoffeeDataFetcher coffeeDataFetcher;
 
     @Value("classpath:coffees.graphql")
@@ -34,24 +35,26 @@ public class CoffeeProvider implements CoffeeDetails {
 
     private GraphQL graphQL;
 
-    public CoffeeProvider(CoffeeRepository coffeeRepository, AllCoffeesDataFetcher allCoffeesDataFetcher, CoffeeDataFetcher coffeeDataFetcher) {
+    public CoffeeProvider(CoffeeRepository coffeeRepository, AllCoffeesDataFetcher allCoffeesDataFetcher, AllCoffeesOrderByDataFetcher allCoffeesOrderByDataFetcher, CoffeeDataFetcher coffeeDataFetcher) {
         this.coffeeRepository = coffeeRepository;
         this.allCoffeesDataFetcher = allCoffeesDataFetcher;
+        this.allCoffeesOrderByDataFetcher = allCoffeesOrderByDataFetcher;
         this.coffeeDataFetcher = coffeeDataFetcher;
     }
-
 
     @PostConstruct
     private void loadSchema() throws IOException {
 
-        //Load Books into the Book Repository
-        loadDataIntoHSQL();
+        loadDataIntoHSQL(); // 데이터 초기화
 
-        // get the schema
         File schemaFile = resource.getFile();
-        // parse schema
         TypeDefinitionRegistry typeRegistry = new SchemaParser().parse(schemaFile);
-        RuntimeWiring wiring = buildRuntimeWiring();
+        RuntimeWiring wiring = RuntimeWiring.newRuntimeWiring()
+                .type("Query", typeWiring -> typeWiring
+                        .dataFetcher("allCoffees", allCoffeesDataFetcher)
+                        .dataFetcher("allCoffeesOrderBy", allCoffeesOrderByDataFetcher)
+                        .dataFetcher("coffee", coffeeDataFetcher))
+                .build();
         GraphQLSchema schema = new SchemaGenerator().makeExecutableSchema(typeRegistry, wiring);
         graphQL = GraphQL.newGraphQL(schema).build();
     }
@@ -66,6 +69,23 @@ public class CoffeeProvider implements CoffeeDetails {
     }
 
     /*
+    private RuntimeWiring buildRuntimeWiring() {
+        return RuntimeWiring.newRuntimeWiring()
+                .type("Query", typeWiring -> typeWiring
+                        .dataFetcher("allCoffees", allCoffeesDataFetcher)
+                        .dataFetcher("coffee", coffeeDataFetcher))
+                .build();
+    }
+    */
+    @Override
+    public ExecutionResult execute(String query) {
+        return graphQL.execute(query);
+    }
+
+
+
+
+    /*
     @Override
     public List<Coffee> findAll() {
         return null;
@@ -76,17 +96,4 @@ public class CoffeeProvider implements CoffeeDetails {
         return null;
     }
     */
-
-    private RuntimeWiring buildRuntimeWiring() {
-        return RuntimeWiring.newRuntimeWiring()
-                .type("Query", typeWiring -> typeWiring
-                        .dataFetcher("allCoffees", allCoffeesDataFetcher)
-                        .dataFetcher("coffee", coffeeDataFetcher))
-                .build();
-    }
-
-    @Override
-    public ExecutionResult execute(String query) {
-        return graphQL.execute(query);
-    }
 }
