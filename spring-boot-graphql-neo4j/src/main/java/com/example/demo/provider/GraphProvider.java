@@ -1,6 +1,6 @@
 package com.example.demo.provider;
 
-import com.example.demo.core.GraphDetails;
+import com.example.demo.core.usecase.GraphDetails;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
@@ -37,7 +37,6 @@ public class GraphProvider implements GraphDetails {
 
     @PostConstruct
     private void loadSchema() throws IOException {
-
 
         File schemaFile = resource.getFile();
         TypeDefinitionRegistry typeRegistry = new SchemaParser().parse(schemaFile);
