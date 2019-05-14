@@ -1,0 +1,19 @@
+schema {
+ query: Query
+}
+
+enum SortOrder {
+    ASC
+	DESC
+}
+
+type Query {
+    person(name: String): Person
+}
+
+type Person {
+    id: String
+    name: String
+}
+
+
