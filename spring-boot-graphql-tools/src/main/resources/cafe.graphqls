@@ -1,0 +1,19 @@
+schema {
+    query: Query
+}
+
+type Query {
+    coffee(name: String): Coffee
+    order(orderId: String): Order
+}
+
+type Coffee {
+    id: String
+    name: String
+    price: Int
+}
+
+type Order {
+    orderId: String
+    description: String
+}
