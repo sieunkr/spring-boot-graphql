@@ -9,6 +9,7 @@ group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -17,12 +18,11 @@ configurations {
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'com.graphql-java-kickstart:graphql-spring-boot-starter:5.8.0'
+    implementation 'com.graphql-java-kickstart:graphql-spring-boot-starter:5.9.0'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
