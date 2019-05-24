@@ -3,11 +3,17 @@ schema {
 }
 
 type Query {
-    person(id: String): Person
-    content: String
+    coffee(name: String): Coffee
+    order(orderId: String): Order
 }
 
-type Person {
+type Coffee {
     id: String
     name: String
+    price: Int
+}
+
+type Order {
+    orderId: String
+    description: String
 }
